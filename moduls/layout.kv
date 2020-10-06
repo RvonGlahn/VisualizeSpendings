@@ -1,0 +1,472 @@
+WindowManager:
+    Start_Window:
+    My_Filechooser:
+    Select_Cols:
+    Add_Category:
+    Configure_Category:
+    Middle_Menue:
+    Visual:
+    
+
+
+<Start_Window>:
+    name: "start"
+    
+    GridLayout:
+        rows: 5
+        size: root.width, root.height
+        padding: [150, 75, 150, 50]
+        spacing: [50,50]
+        
+        Label:
+            text: "Ausgaben aus dem Online Banking Visualisieren"
+            color: [0,0,0,0.9]
+            font_size: "20sp"
+
+        Label:
+            text: "1. Im Online Banking csv Datei aller Umsaetze herunterladen"
+            color: [0,0,0,0.9]
+            font_size: "14sp"
+
+        Label:
+            text: "2. CSV Datei einlesen und relevante Eintraege auswaehlen"
+            color: [0,0,0,0.9]
+            font_size: "14sp"
+
+        Label:
+            text: "3. Ausgaben-Kategorien an eigene Beduerfnisse anpassen. "
+            color: [0,0,0,0.9]
+            font_size: "14sp"
+
+        GridLayout:
+            cols: 1
+            padding: [50, 20]
+            spacing: [20,20]
+            row_default_height: "50dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height   
+            
+            RoundedButton:
+                text:"CSV Datei auswaehlen"
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                on_release:
+                    root.set_desktop()
+                    app.root.current = "my_filechooser"
+                    root.manager.transition.direction = "left"
+        
+
+<My_Filechooser>:
+    id: my_filechooser
+    name:  "my_filechooser"
+    canvas.before:
+        Color:
+            rgb: 112/255, 128/255, 144/255
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    GridLayout:
+        rows: 2
+        size: root.width, root.height
+        padding: [20, 20]
+        spacing: [20,20]
+        color: (.5, .4, .5, 1)
+        
+        
+        FileChooserIconView:
+            id: filechooser
+            dirselect: True
+        
+        GridLayout:
+            cols: 2
+            padding: [40, 40]
+            spacing: [20,20]
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            
+            RoundedButton:
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                text: "Open"
+                on_release:
+                    root.manager.transition.direction = "right"
+					app.root.current = "select_cols"
+					my_filechooser.open(filechooser.path, filechooser.selection)
+
+            RoundedButton:
+                text: "Close"
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                on_release:
+                    root.manager.transition.direction = "right"
+					app.root.current = "start"
+
+
+<Select_Cols>:
+    name: "select_cols"
+    GridLayout:
+        rows: 3
+        size: root.width, root.height
+        padding: [30, 20]
+        spacing: [20,10]
+
+        GridLayout:
+            rows: 1
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            Label:
+                text: "Waehle fuer jede Option die passende Spalte aus."
+                color: [0,0,0,0.9]
+                font_size: "20sp"
+
+        GridLayout:
+            cols: 2
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [30, 20]
+            spacing: [20,10]
+            Label:
+                text: "Datum"
+                color: [0,0,0,1]
+            RoundedButton:
+                id: date_button
+                text: "click me"
+                back_color: (0.424, 0.478, 0.537, 1)
+                border_radius: [10]
+                on_release:
+                    root.select_col("date")
+            Label:
+                text: "Empfaenger / Mail"
+                color: [0,0,0,1]
+            RoundedButton:
+                id: auf_button
+                text: "click me"
+                back_color: (0.424, 0.478, 0.537, 1)
+                border_radius: [10]
+                on_release:
+                    root.select_col("auf")
+            Label:
+                text: "Verwendungszweck / Hinweis /\n            Beschreibung"
+                color: [0,0,0,1]
+            RoundedButton:
+                id: verw_button
+                text: "click me"
+                back_color: (0.424, 0.478, 0.537, 1)
+                border_radius: [10]
+                on_release:
+                    root.select_col("verw")
+            Label:
+                text: "Betrag / Umsatz / Netto"
+                color: [0,0,0,1]
+            RoundedButton:
+                id: betrag_button
+                text: "click me"
+                back_color: (0.424, 0.478, 0.537, 1)
+                border_radius: [10]
+                on_release:
+                    root.select_col("betrag")
+        GridLayout:
+            rows: 1
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [150, 0]
+            RoundedButton:
+                text: "Weiter"
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                on_release:
+                    root.save()
+                    root.manager.transition.direction = "right"
+					app.root.current = "add_category"
+					root.call_cat()
+
+
+
+<Add_Category>:
+    name: "add_category"
+    GridLayout:
+        rows: 5
+        size: root.width, root.height
+        padding: [30, 20]
+        spacing: [20,10]
+
+        GridLayout:
+            rows: 1
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            Label:
+                text: "Ordne deinen Ausgaben passende Kategorien zu.\nErstelle auch neue Kategorien."
+                color: [0,0,0,0.9]
+                font_size: "20sp"
+
+        GridLayout:
+            cols: 3
+            id: category_buttons
+            spacing: [5,5]
+            padding: [0, 25]
+
+        GridLayout:
+            cols: 3
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [80, 0, 80, 20]
+            spacing: [40,0]
+            Label:
+                text: "Neue Kategorie:"
+                color: [0,0,0,1]
+                padding_y: 8
+            TextInput:
+                id: pop_category
+                write_tab: False
+                multiline: False
+                text: ""
+                size_hint: [None,None]
+                height: self.minimum_height
+                width: 150
+                padding: 8
+
+            RoundedButton:
+                text: "+"
+                size: 30, 30
+                size_hint: None, None
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                on_release:
+                    root.add_name(pop_category.text)
+
+        GridLayout:
+            cols: 4
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [40, 0, 40, 20]
+            spacing: [20,0]
+            Label:
+                text: "Kategorie Inhalt:"
+                color: [0,0,0,1]
+                padding_y: 8
+            RoundedButton:
+                id: choose_cat
+                text: "Kategorie"
+                back_color: (83 / 255, 96 / 255, 110 / 255, 1.0)
+                on_release:
+                    root.choose_category()
+            RoundedButton:
+                text: "Inhalt"
+                back_color: (83 / 255, 96 / 255, 110 / 255, 1.0)
+                on_release:
+                    root.show_category(choose_cat.text)
+            RoundedButton:
+                text: "reset"
+                back_color: (83 / 255, 96 / 255, 110 / 255, 1.0)
+                on_release:
+                    root.reset_category(choose_cat.text)
+
+        GridLayout:
+            cols: 1
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [150, 0]
+            spacing: [20,0]
+            RoundedButton:
+                text: "Weiter"
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                on_release:
+                    root.call_config()
+                    root.filter_spendings()
+                    root.manager.transition.direction = "right"
+					app.root.current = "configure_category"
+
+
+
+<Configure_Category>:
+    name: "configure_category"
+    GridLayout:
+        rows: 4
+        size: root.width, root.height
+        padding: [30, 20]
+        spacing: [20,10]
+
+        GridLayout:
+            rows: 1
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            Label:
+                text: "Ordne den Zahlungen, die nicht zugeordnet werden konnten, Kategorien zu. \n Druecke dazu die passenden Buttons"
+                color: [0,0,0,0.9]
+                font_size: "16sp"
+
+        GridLayout:
+            rows: 1
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [0, 10]
+            Label:
+                id: label_zahlung
+                text: "hier kommen die infos hin"
+                color: [0,0,0,0.9]
+                font_size: "12sp"
+
+        GridLayout:
+            cols: 3
+            id: button_zahlung
+            spacing: [5,5]
+            padding: [0, 10]
+
+        GridLayout:
+            cols: 2
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [150, 0]
+            spacing: [20,0]
+            RoundedButton:
+                text: "Zurueck"
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                on_release:
+                    root.delete_cat()
+                    root.manager.transition.direction = "left"
+					app.root.current = "add_category"
+			RoundedButton:
+                text: "Weiter"
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                on_release:
+                    root.save_category()
+                    root.manager.transition.direction = "right"
+					app.root.current = "middle_menue"
+
+<Middle_Menue>:
+    name: "middle_menue"
+    GridLayout:
+        rows: 2
+        size: root.width, root.height
+        padding: [30, 40]
+        spacing: [20,10]
+
+        GridLayout:
+            rows: 1
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [30, 40]
+            Label:
+                text: "Neue Karte/Datei hinzufuegen oder Visualisieren"
+                color: [0,0,0,0.9]
+                font_size: "16sp"
+
+        GridLayout:
+            rows: 2
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [150, 40]
+            spacing: [20,20]
+            RoundedButton:
+                text: "+ Add File"
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                on_release:
+                    root.manager.transition.direction = "right"
+                    app.root.current = "start"
+            RoundedButton:
+                text: "Visualize"
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                on_release:
+                    root.manager.transition.direction = "right"
+                    app.root.current = "visual"
+                    root.call_visualize()
+
+<Visual>:
+    name: "visual"
+    GridLayout:
+        rows: 3
+        padding: [30, 40]
+
+        GridLayout:
+            rows: 1
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [30, 40]
+            Label:
+                text: "Filtere deine Ausgaben:"
+                color: [0,0,0,0.9]
+                font_size: "16sp"
+
+        GridLayout:
+            rows: 1
+            row_default_height: "40dp"
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: [60, 40]
+            spacing: [20,10]
+            RoundedButton:
+                id: cat_button
+                text: "Kategorien"
+                back_color: (0.424, 0.478, 0.537, 1)
+                border_radius: [10]
+                size: 120, 40
+                size_hint: None, None
+                on_release:
+                    root.load_dropdown("cat")
+            RoundedButton:
+                id: year_button
+                text: "Jahr"
+                back_color: (0.424, 0.478, 0.537, 1)
+                border_radius: [10]
+                size: 120, 40
+                size_hint: None, None
+                on_release:
+                    root.load_dropdown("year")
+            RoundedButton:
+                id: month_button
+                text: "Monat"
+                back_color: (0.424, 0.478, 0.537, 1)
+                border_radius: [10]
+                size: 120, 40
+                size_hint: None, None
+                on_release:
+                    root.load_dropdown("month")
+        GridLayout:
+            rows: 1
+            padding: [200, 40]
+            RoundedButton:
+                text: "filtern"
+                back_color: (0.157, 0.455, 0.753, 1.0)
+                size: 120, 40
+                size_hint: None, None
+                on_release:
+                    root.load_diagramm()
+
+
+<RoundedButton@Button>:
+    background_color: (0,0,0,0)
+    background_normal: ''
+    back_color: (1,0,1,1)
+    border_radius: [23]
+    canvas.before:
+        Color:
+            rgba: self.back_color
+        RoundedRectangle:
+            size:self.size
+            pos: self.pos
+            radius: self.border_radius        
