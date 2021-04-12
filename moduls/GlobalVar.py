@@ -10,3 +10,4 @@ category_dict = None            # load old and save all new categories in the di
 
 visual_df = None                # df that contains Data for Date, Ausgabenart, Betrag and Kartentyp
 
+fault_list = ["+", "*", "^", ".", "@", "?", "(", ")"]  # fault list of characters that might raise errors

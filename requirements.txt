@@ -2,5 +2,5 @@ numpy
 pandas
 matplotlib
 seaborn
-PIL
-kivy
+pillow
+kivy -c conda-forge
