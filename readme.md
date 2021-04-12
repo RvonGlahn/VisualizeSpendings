@@ -7,6 +7,8 @@ It helps to get an idea of where you spend your money if  you have different ban
 
 This code works offline and none of the data gets transferred anywhere.
 
+You find the diagrams in the /temp folder.
+
 ### Installation
 
 Requirements
